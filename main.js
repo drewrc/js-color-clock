@@ -1,45 +1,63 @@
-function currentTime() { //function ID
-    const date = new Date(); //define date 'new' today
-     let hh = date.getHours(); // define variable 'hh' for hours '.getHours' permanent JS object
-     let mm = date.getMinutes(); // define variable 'mm' for minutes
-     let ss = date.getSeconds(); // define variable 'ss' for seconds 
+//refactored project 
+(function() {      //immediately invoked function expression -> avoid leaking out to global scope - "we are not dirtying up the window object"
+    "use strict";       //see notes: helps target 
     
+    // to get hours/min/secs
    
-      hh = (hh < 10) ? "0" + hh : hh; //variable less than 10 add 0 in front of var
-      mm = (mm < 10) ? "0" + mm : mm; // 00 : 00;
-      ss = (ss < 10) ? "0" + ss : ss; // repeat for hour, min and secs
-       
-      let time = hh + ":" + mm + ":" + ss; //variable 'time' creates a string variables and '+'
    
-     document.querySelector(".clock-display").innerText = time;  //selects class "clock display" and text inside
-     var t = setTimeout(function(){currentTime()}, 1000); //recursion
- }
- 
+   const $display = document.querySelector(".clock-display");
+   const $progressBar = document.querySelector(".clock-progress-bar");
+   const $clock = document.querySelector(".clock");
+
+   let isHovering = false;
+
+   $clock.addEventListener('mouseover', function () {
+    isHovering = true;
+   }); 
+
+   $clock.addEventListener('mouseout', function () {
+    isHovering = true;
+   }); 
    
- currentTime();
+   setInterval(funciton () {
 
- function barWidth() { //function ID
-    const date = new Date(); //define date new for today
-    let ss = date.getSeconds(); //getSecond like above to define ss
+       const currentTime = new Date();
+       // console.log(currentTime);  // to get hours/min/secs
+   
 
-    const bar = document.querySelector(".clock-progress-bar"); //select progress bar 
-    console.log(bar); 
-    bar.style.width = (ss/60)*14 + "rem"; //object to define element width; use var ss/60 (for second %)
-    setInterval(function(){barWidth()}, 1000);
+$display.textContent = `${hour}:${minutes}:${seconds}`; //back tics allow us to concatinate and turn into string interprolation
 
- }
+   }, 1000);
 
- barWidth();
+   console.log(ss/60) //check math
+   $progressBar.getElementsByClassName.width = `${(seconds / 60) * 14}rem`;//string for width by targetting width
+    $display.textContent =`${hour}:${minutes}:${seconds}`;
+}, 1000);
+   
 
- function changeColor() {
- const color = ["0062ff", "d900ed", "#ed6f00", "ed6f00", "18ed00", "18ed00", "#0096ed"];
- for (let i = 0; i < color.length; i++){
+if (isHovering) {
+const secondsHex = currentTime.getSeconds().toString(16)).slice(-2);
+//...
+//...
+console.log(secondsHex, minutesHex, hourHex);
+console.log(typeof secondsHex);
+} else {
+        // console.log(currentTime);  // to get hours/min/secs
+    const ss = ("0" + currentTime.getSeconds()).slice(-2);
+       const mm = ("0" + currentTime.getMinutes()).slice(-2);
+       const hh = ("0" + currentTime.getHours()).slice(-2);
+      // console.log(hour, minutes, seconds);
 
- }
+}
 
- const hex = "#" + color;
+$progressBar.style.width = `${(seconds / 60) * 14}rem`;
+$display.textContnet = '${hour}:${minutes}:${seconds}'
 
- document.querySelector(".clock").style.backgroundColor = hex;
- var t = setTimeout(function(){changeColor()}, 1000);
- }
- changeColor();
+
+
+})();
+
+
+   //scope: what values/variables do I have access do w/i this section of code 
+   //use parseInt() toString method
+   //for hex: 16
