@@ -24,36 +24,16 @@ function time() {
 
    document.querySelector(".clock-display").innerText = timeNow; 
 
-    //var arr=[hour,minutes,seconds].map(function(num){
-   //return (num<10) ? '0'+num : String(num)
+
 };
-
-//hour=arr[0];
-//minutes=arr[1];
-//seconds=arr[2];
-//return hour + ':' +  minutes + ':' + seconds; 
-
-//};
-
-//function output(){
-//var color= '# ' + time;
-//document.body.bgColor=color;
-//document.querySelector('#time').textContent=color;
-
-//}
-
-//output();
-
-//setInterval( function()
-//{output( time() ) 
-//} , 1000 );
-
 
 time();
 setInterval(function(){time()}, 1000); //updates clock display every second with time
 
 
-function clockColor() {
+
+
+function clockArr() { //function to obtain array for hex color
 
    var currentTime = new Date();
    var seconds = currentTime.getSeconds();
@@ -65,26 +45,35 @@ function clockColor() {
    minutes = (minutes < 10) ? "0" + minutes : minutes;
    seconds = (seconds < 10) ? "0" + seconds : seconds;
 
-   var timeNow = hour + ":" + minutes + ":" + seconds; 
+  // var timeNow = hour + ":" + minutes + ":" + seconds; 
+
+   var arr=[hour,minutes,seconds].map(function(num){
+      return (num<10) ? '0'+num : String(num)
+   });
+
+   hour=arr[0];
+   minutes=arr[1];
+   seconds=arr[2];
+   return hour + ':' +  minutes + ':' + seconds; 
+};
 
 
-
-
-
-   var color= '# ' + time;
+function output(clockArr){
+   var color= '# ' + clockArr;
    document.body.bgColor=color;
+   //>>having trouble targeting the background of the css object clock bg 
 
    //document.querySelector(".clock") = colorOfClock;
-   //document.querySelector('#time').textContent=color;
+};
 
-}
+setInterval(function(){ 
+	output(clockArr() )} , 1000 );
 
-clockColor();
+
+
 
 
 function progressBar() { //function to change progress bar length
-
-
    var currentTime = new Date();
    var seconds = currentTime.getSeconds();
    let bar = document.querySelector(".clock-progress-bar");
@@ -96,9 +85,6 @@ setInterval(function(){progressBar()}, 1000); //updates clock display every seco
 
 
 
-
-
-//};
 
 
 
