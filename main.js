@@ -1,92 +1,60 @@
-//refactored project 
-//(function() {   
-       //immediately invoked function expression -> avoid leaking out to global scope - "we are not dirtying up the window object"
-    //"use strict";       //see notes: helps target 
+//refactored project
+(function () {
+  //immediately invoked function expression -> avoid leaking out to global scope - "we are not dirtying up the window object"
 
-    
-function time() {
-   
-    //var $display = document.querySelector(".clock-display");
-    
-    //var $clock = document.querySelector(".clock");
+  "use strict"; // prevents bad syntax and causes some previously silent errors to bubble up and be seen
+//define variables at beginning of code
+  var $clock = document.querySelector(".clock");
+  let $progressBar = document.querySelector(".clock-progress-bar");
+  let $clockDisplay = document.querySelector(".clock-display");
 
-    var currentTime = new Date();
-    var seconds = currentTime.getSeconds();
-    var minutes = currentTime.getMinutes();
-    var hour = currentTime.getHours();
+//isHovering false so that clock automatically displays current time regularly
+  let isHovering = false;
 
+  //addeventlistener to change time to hex color using function isHovering when mouse is hovering
+  $clock.addEventListener("mouseover", function () {
+    isHovering = true;
+  });
 
-    hour = (hour < 10) ? "0" + hour : hour;
-    minutes = (minutes < 10) ? "0" + minutes : minutes;
-    seconds = (seconds < 10) ? "0" + seconds : seconds;
-
-    var timeNow = hour + ":" + minutes + ":" + seconds;
-
-   document.querySelector(".clock-display").innerText = timeNow; 
+  //event listner that changes back to the time on display 
+  $clock.addEventListener("mouseout", function () {
+    isHovering = false;
+  });
 
 
-};
+//function to display current time, progress bar, change background color and change time to hex
 
-time();
-setInterval(function(){time()}, 1000); //updates clock display every second with time
+  function updateClockDisplay() {
+   //variable assigned and defined for current date
+    const currentTime = new Date();
+    let timeDisplayValue;
+   //define s/m/h, add string of 0 
+   //create string to define variable 
+    let seconds = ("0" + currentTime.getSeconds().toString(16)).slice(-2);
+    let minutes = ("0" + currentTime.getMinutes().toString(16)).slice(-2);
+    let hour = ("0" + currentTime.getHours().toString(16)).slice(-2);
 
+   //new string to define hexSeconds, etc for color 
+   let hexSeconds = ("0" + currentTime.getSeconds()).slice(-2);
+   let hexMinutes = ("0" + currentTime.getMinutes()).slice(-2);
+   let hexHour = ("0" + currentTime.getHours()).slice(-2);
 
+   //if else statment to change current time on hover using event listeners above 
+   if (isHovering) {
+      timeDisplayValue = hexHour + ":" + hexMinutes + ":" + hexSeconds;
+    } else {
+      timeDisplayValue = hour + ":" + minutes + ":" + seconds;
+    }
 
+    //target inner text (00:00:00) of $clock display to update time
+    $clockDisplay.innerText = timeDisplayValue;
+    //changes the length of progress bar based on seconds
+    $progressBar.style.width = `${currentTime.getSeconds() / 60 * 14}rem`;
+    //changes background color creating a new string based of hex number using string concatination
+    $clock.style.backgroundColor = `#${hexHour}${hexMinutes}${hexSeconds}`;
 
-function clockArr() { //function to obtain array for hex color
+  }
+//use setInterval to change the time of the updateClockDisplay function every second
+  setInterval(updateClockDisplay, 1000);
 
-   var currentTime = new Date();
-   var seconds = currentTime.getSeconds();
-   var minutes = currentTime.getMinutes();
-   var hour = currentTime.getHours();
-
-
-   hour = (hour < 10) ? "0" + hour : hour;
-   minutes = (minutes < 10) ? "0" + minutes : minutes;
-   seconds = (seconds < 10) ? "0" + seconds : seconds;
-
-  // var timeNow = hour + ":" + minutes + ":" + seconds; 
-
-   var arr=[hour,minutes,seconds].map(function(num){
-      return (num<10) ? '0'+num : String(num)
-   });
-
-   hour=arr[0];
-   minutes=arr[1];
-   seconds=arr[2];
-   return hour + ':' +  minutes + ':' + seconds; 
-};
-
-
-function output(clockArr){
-   var color= '# ' + clockArr;
-   document.body.bgColor=color;
-   //>>having trouble targeting the background of the css object clock bg 
-
-   //document.querySelector(".clock") = colorOfClock;
-};
-
-setInterval(function(){ 
-	output(clockArr() )} , 1000 );
-
-
-
-
-
-function progressBar() { //function to change progress bar length
-   var currentTime = new Date();
-   var seconds = currentTime.getSeconds();
-   let bar = document.querySelector(".clock-progress-bar");
-   bar.style.width = (seconds/60)*14 + "rem";
-};
-
-progressBar();
-setInterval(function(){progressBar()}, 1000); //updates clock display every second with line width
-
-
-
-
-
-
-
-
+})();
