@@ -12,16 +12,16 @@
   let isHovering = false;
 
   //addeventlistener to change time to hex color using function isHovering when mouse is hovering
-  $clock.addEventListener("mouseover", function () {
+  $clock.addEventListener("mouseout", function () {
     isHovering = true;
   });
 
   //event listner that changes back to the time on display 
-  $clock.addEventListener("mouseout", function () {
+  $clock.addEventListener("mouseover", function () {
     isHovering = false;
   });
 
-
+  
 //function to display current time, progress bar, change background color and change time to hex
 
   function updateClockDisplay() {
